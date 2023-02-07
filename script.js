@@ -11,46 +11,67 @@ Attenzione: nella stessa cella può essere posizionata al massimo una bomba, per
 */
 
 /* ON LOAD */
-const gridEl = document.getElementById("grid");
-console.log(gridEl);
-
+const gridEl = document.getElementById("grid"); 
 const square = 100;
 
+/* START GAME */
 const playButtonEl = document.getElementById("play-button");
-
 playButtonEl.addEventListener(
     "click",
     function () {
-
         generateGrid(gridEl, square);
     }
 )
-
-
 /* FUNCTION */
 
 function generateGrid(grid, squareTotal) {
 
+    
+    const bomb = bombGenerate(1, squareTotal);
+    console.log(bomb);
+
     for (let i = 0; i < squareTotal; i++) {
 
-        const cardEl = document.createElement("div");
-        cardEl.classList.add("grid-element");
-        cardEl.classList.add("col");
-        cardEl.classList.add("col-auto");
-        cardEl.classList.add("p-3");
-        cardEl.innerHTML = i + 1;
-        grid.append(cardEl);
+        const cellEl = document.createElement("div");
+        cellEl.classList.add("grid-element");
+        cellEl.classList.add("col");
+        cellEl.classList.add("col-auto");
+        cellEl.innerHTML = i + 1;
+        grid.append(cellEl);
 
-        console.log(cardEl);
-
-        cardEl.addEventListener(
+        cellEl.addEventListener(
             "click",
             function () {
 
                 this.classList.toggle("active");
                 console.log(this.innerHTML);
 
+                // se al click è bomba diventa rosso
+                //altrimenti resta active
+                if(bomb.includes(parseInt(this.innerHTML))) {
+                    cellEl.classList.add("bomb");
+                    cellEl.innerHTML = "&#128163;";
+                } 
             }
         );
+         
     }
+}
+
+/*BOMBE  */ 
+
+function bombGenerate (min, max){
+
+    const bombArray = [];
+
+    while (bombArray.length < 16) {
+        
+        const randomNumber = Math.floor(Math.random() * max - min + 1) + min;
+
+        if (!bombArray.includes(randomNumber)){
+            bombArray.push(randomNumber);
+        }    
+    }
+
+    return bombArray;
 }
