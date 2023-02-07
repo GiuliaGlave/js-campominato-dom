@@ -44,17 +44,27 @@ function generateGrid(grid, squareTotal) {
             function () {
 
                 this.classList.toggle("active");
-                console.log(this.innerHTML);
 
                 // se al click è bomba diventa rosso
                 //altrimenti resta active
                 if(bomb.includes(parseInt(this.innerHTML))) {
                     cellEl.classList.add("bomb");
                     cellEl.innerHTML = "&#128163;";
-                } 
+
+                    gameOver();
+
+                } else {
+                    cellEl.innerHTML = "&#127800;";
+                }
+
+                const activeEl = document.querySelectorAll(".grid-element.active");
+                if(squareTotal - bomb.length == activeEl.length){
+                    alert("hai vinto");
+                }
             }
         );
-         
+        
+      
     }
 }
 
@@ -74,4 +84,13 @@ function bombGenerate (min, max){
     }
 
     return bombArray;
+}
+
+/* GAME OVER */
+
+function gameOver(){
+    const activeEl = document.querySelectorAll(".grid-element.active");
+
+    alert("hai indovitato " + (activeEl.length - 1) + " celle");
+    
 }
